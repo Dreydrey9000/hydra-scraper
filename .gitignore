@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.venv/
+*.pyc
+__pycache__/
+.env
+.env.local
+.hydra.json
+.DS_Store

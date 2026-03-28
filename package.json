@@ -1,0 +1,34 @@
+{
+  "name": "hydra-scraper",
+  "version": "0.1.0",
+  "description": "Self-healing web scraper with 10+ fallback engines. Never fails.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "hydra-scraper": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/cli.js",
+    "health": "node dist/cli.js health"
+  },
+  "keywords": ["scraper", "web-scraping", "fallback", "crawl4ai", "scrapling", "jina"],
+  "author": "Drey (Andre Thomas)",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "1.0.0",
+    "chalk": "5.4.1",
+    "commander": "13.1.0",
+    "node-html-markdown": "1.3.0",
+    "ora": "8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.3",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
