@@ -27,6 +27,8 @@ export function loadConfig(): HydraConfig {
     tavilyApiKey: fileConfig.tavilyApiKey ?? process.env.TAVILY_API_KEY,
     exaApiKey: fileConfig.exaApiKey ?? process.env.EXA_API_KEY,
     browserbaseApiKey: fileConfig.browserbaseApiKey ?? process.env.BROWSERBASE_API_KEY,
+    braveApiKey: fileConfig.braveApiKey ?? process.env.BRAVE_SEARCH_API_KEY ?? process.env.BRAVE_API_KEY,
+    perplexityApiKey: fileConfig.perplexityApiKey ?? process.env.PERPLEXITY_API_KEY,
     pythonPath: fileConfig.pythonPath,
     venvPath: fileConfig.venvPath,
     defaultTimeout: fileConfig.defaultTimeout ?? 15_000,

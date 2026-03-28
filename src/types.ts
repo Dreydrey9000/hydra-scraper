@@ -69,6 +69,8 @@ export interface HydraConfig {
   tavilyApiKey?: string;
   exaApiKey?: string;
   browserbaseApiKey?: string;
+  braveApiKey?: string;
+  perplexityApiKey?: string;
   pythonPath?: string;
   venvPath?: string;
   defaultTimeout?: number;

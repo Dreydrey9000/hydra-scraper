@@ -14,6 +14,11 @@ import { createPlaywrightEngine } from './engines/playwright.js';
 import { createExaEngine } from './engines/exa.js';
 import { createTavilyEngine } from './engines/tavily.js';
 import { createBrowserbaseEngine } from './engines/browserbase.js';
+import { createJinaSearchEngine } from './engines/jina-search.js';
+import { createBraveEngine } from './engines/brave.js';
+import { createPerplexityEngine } from './engines/perplexity.js';
+import { createMarkItDownEngine } from './engines/markitdown.js';
+import { createCurlEngine } from './engines/curl.js';
 
 /**
  * Creates all 10 engines and wires them into the router.
@@ -30,7 +35,7 @@ export function createHydra(): {
   // Load config (API keys, timeouts, etc.)
   loadConfig();
 
-  // Create all 10 engines
+  // Create all 15 engines
   const engineList: Engine[] = [
     createJinaEngine(),
     createWebFetchEngine(),
@@ -42,6 +47,11 @@ export function createHydra(): {
     createExaEngine(),
     createTavilyEngine(),
     createBrowserbaseEngine(),
+    createJinaSearchEngine(),
+    createBraveEngine(),
+    createPerplexityEngine(),
+    createMarkItDownEngine(),
+    createCurlEngine(),
   ];
 
   // Register them in a Map keyed by name
