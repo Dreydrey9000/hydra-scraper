@@ -9,14 +9,14 @@ import { loadConfig } from './config.js';
  */
 const FALLBACK_CHAINS: Record<UrlType, string[]> = {
   general:   ['jina', 'webfetch', 'cheerio', 'crawl4ai', 'scrapling', 'firecrawl', 'playwright', 'perplexity', 'curl'],
-  instagram: ['scrapling', 'firecrawl', 'crawl4ai', 'playwright', 'curl'],
-  linkedin:  ['exa', 'tavily', 'scrapling', 'firecrawl', 'curl'],
-  twitter:   ['jina', 'firecrawl', 'scrapling', 'tavily', 'curl'],
-  tiktok:    ['scrapling', 'firecrawl', 'crawl4ai', 'playwright', 'curl'],
-  pdf:       ['webfetch', 'firecrawl', 'crawl4ai', 'markitdown', 'curl'],
-  spa:       ['crawl4ai', 'playwright', 'scrapling', 'firecrawl', 'curl'],
-  search:    ['exa', 'jina-search', 'brave', 'firecrawl', 'tavily', 'perplexity'],
-  auth:      ['playwright', 'browserbase', 'scrapling', 'firecrawl', 'curl'],
+  instagram: ['scrapling', 'firecrawl', 'crawl4ai', 'playwright', 'jina', 'perplexity', 'curl'],
+  linkedin:  ['exa', 'perplexity', 'tavily', 'scrapling', 'firecrawl', 'playwright', 'jina', 'curl'],
+  twitter:   ['jina', 'firecrawl', 'scrapling', 'tavily', 'perplexity', 'curl'],
+  tiktok:    ['scrapling', 'firecrawl', 'crawl4ai', 'playwright', 'jina', 'perplexity', 'curl'],
+  pdf:       ['webfetch', 'markitdown', 'firecrawl', 'crawl4ai', 'curl'],
+  spa:       ['crawl4ai', 'playwright', 'scrapling', 'firecrawl', 'jina', 'curl'],
+  search:    ['exa', 'jina-search', 'brave', 'perplexity', 'firecrawl', 'tavily'],
+  auth:      ['playwright', 'browserbase', 'scrapling', 'firecrawl', 'crawl4ai', 'curl'],
 };
 
 /** Minimum content length to consider a scrape successful */
