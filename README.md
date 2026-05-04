@@ -5,7 +5,7 @@
 <h3 align="center">Cut one head off, two more grow back.</h3>
 
 <p align="center">
-  Self-healing web scraper with 10 fallback engines.<br/>
+  Self-healing web scraper with 11 fallback engines (incl. stealth + page actions).<br/>
   APIs run out of credits. Sites block you. Engines go down.<br/>
   <strong>Hydra doesn't care. Every URL gets scraped, every time.</strong>
 </p>
@@ -13,7 +13,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Node-18%2B-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node 18+" />
   <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Engines-10-blueviolet?style=flat-square" alt="Engines 10" />
+  <img src="https://img.shields.io/badge/Engines-11-blueviolet?style=flat-square" alt="Engines 11" />
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License MIT" />
   <img src="https://img.shields.io/badge/Zero%20Config-Tier%200-orange?style=flat-square" alt="Zero Config" />
 </p>
@@ -38,6 +38,7 @@ $ hydra-scraper health
     ✓  cheerio
     ✓  crawl4ai
     ✓  scrapling
+    ✓  scrapling-stealth
     ✓  playwright
 
   Tier 2 — Paid API
@@ -48,7 +49,7 @@ $ hydra-scraper health
     ✗  browserbase — no API key
 
   ────────────────────────────────────────────
-  8/10 engines active
+  9/11 engines active
 ```
 
 ```
@@ -116,6 +117,7 @@ The router tries the **cheapest and fastest engines first**, then escalates to h
 | 1 | **Cheerio** | Fast HTML parsing, strips junk, converts to clean markdown | - | - | - | - |
 | 1 | **Crawl4AI** | Python-based, handles JavaScript-rendered pages | Yes | - | Yes | - |
 | 1 | **Scrapling** | Python-based, stealth mode bypasses anti-bot detection | Yes | Yes | - | - |
+| 1 | **Scrapling-Stealth** | Real browser via rebrowser-playwright; stealth + page actions (click/fill/scroll) | Yes | Yes | - | - |
 | 1 | **Playwright** | Full browser automation for auth-walled & JS-heavy pages | Yes | Yes | - | - |
 | 2 | **Firecrawl** | Cloud scraping with stealth proxy and PDF support | Yes | Yes | Yes | - |
 | 2 | **Tavily** | Content extraction from protected pages | Yes | Yes | - | - |
@@ -149,8 +151,13 @@ That's it. Tier 0 engines work immediately with zero config.
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install crawl4ai scrapling
+pip install -r requirements.txt
+rebrowser-playwright install chromium  # required for scrapling-stealth
 ```
+
+> Versions are pinned in `requirements.txt` because Scrapling 0.3 changes the
+> API. Don't `pip install scrapling` without the pin or you may get a build that
+> breaks the engine.
 
 ---
 
@@ -261,7 +268,22 @@ const ig = await hydra.scrape('https://instagram.com/p/xyz', {
   stealth: true,
   timeout: 30000,
 });
+
+// Page actions — click, fill, scroll BEFORE scraping
+// (only the scrapling-stealth engine honors these; router prefers it for IG/TikTok/auth/SPA)
+const interactive = await hydra.scrape('https://some-site.com', {
+  stealth: true,
+  waitSelector: 'main',                              // wait for content to render
+  actions: [
+    { type: 'wait', ms: 2000 },
+    { type: 'click', selector: 'button[aria-label="Close"]' },
+    { type: 'scroll', direction: 'bottom' },
+    { type: 'wait', ms: 1000 },
+  ],
+});
 ```
+
+**Action types**: `click`, `fill`, `wait`, `press`, `scroll`, `hover` — see `src/types.ts` for the full union.
 
 ---
 
