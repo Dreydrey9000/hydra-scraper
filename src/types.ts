@@ -27,7 +27,21 @@ export interface ScrapeOptions {
   preferTier?: 0 | 1 | 2;
   jsonSchema?: Record<string, unknown>;
   silent?: boolean;
+  /** Page actions executed before scraping (only honored by action-capable engines like scrapling-stealth) */
+  actions?: ScrapeAction[];
+  /** Wait for a CSS selector to appear before scraping */
+  waitSelector?: string;
+  /** Use the real installed Chrome instead of bundled Chromium (better fingerprint) */
+  realChrome?: boolean;
 }
+
+export type ScrapeAction =
+  | { type: "click"; selector: string }
+  | { type: "fill"; selector: string; value: string }
+  | { type: "wait"; ms: number }
+  | { type: "press"; key: string }
+  | { type: "scroll"; direction?: "top" | "bottom"; selector?: string }
+  | { type: "hover"; selector: string };
 
 export interface EngineStatus {
   name: string;
