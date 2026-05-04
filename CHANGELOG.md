@@ -1,3 +1,13 @@
+## [2026-05-04] — evening (nice-to-haves)
+
+### Added
+- **CLI flags for scrapling-stealth**: `--actions <json>`, `--wait-selector <css>`, `--cookies <json>`, `--real-chrome`. You can now drive interactive scrapes from a bash one-liner instead of having to write Node code.
+- **Cookie support** in `ScrapeOptions.cookies` — array of `{name, value}` sent as a Cookie header. Useful for session-token auth on sites that accept cookie-based logins. (Note: NOT a full storage_state — localStorage / sessionStorage are not restored.)
+- **Vitest test suite** — 9 unit tests covering the engine contract, URL detection, action serialization round-trip, and cookie-header formatting. `npm test` green. Tests live in `tests/`.
+
+### Changed
+- CLI now validates `--actions` and `--cookies` JSON up-front and fails fast with a readable error before spinning up engines.
+
 ## [2026-05-04] — afternoon (lock-the-door fixes)
 
 ### Fixed

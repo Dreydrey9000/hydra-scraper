@@ -6,6 +6,7 @@ import ora from 'ora';
 import { writeFile } from 'node:fs/promises';
 import { createHydra } from './index.js';
 import { printHealth } from './health.js';
+import type { ScrapeAction, ScrapeCookie } from './types.js';
 
 const program = new Command();
 
@@ -24,11 +25,36 @@ program
   .option('--stealth', 'Force stealth mode (anti-bot evasion)')
   .option('-o, --output <file>', 'Save output to a file instead of stdout')
   .option('--timeout <ms>', 'Per-engine timeout in milliseconds', '15000')
-  .action(async (url: string, opts: { json?: boolean; stealth?: boolean; output?: string; timeout?: string }) => {
+  .option('--actions <json>', 'JSON array of page actions for scrapling-stealth (e.g. \'[{"type":"scroll","direction":"bottom"}]\')')
+  .option('--wait-selector <css>', 'CSS selector to wait for before scraping (scrapling-stealth)')
+  .option('--real-chrome', 'Use real installed Chrome instead of bundled Chromium (stronger fingerprint)')
+  .option('--cookies <json>', 'JSON array of {name,value} cookies for session-token auth (e.g. \'[{"name":"session","value":"abc"}]\')')
+  .action(async (url: string, opts: {
+    json?: boolean;
+    stealth?: boolean;
+    output?: string;
+    timeout?: string;
+    actions?: string;
+    waitSelector?: string;
+    realChrome?: boolean;
+    cookies?: string;
+  }) => {
     const spinner = ora({
       text: chalk.cyan('Scraping with Hydra...'),
       color: 'cyan',
     }).start();
+
+    let actions: ScrapeAction[] | undefined;
+    let cookies: ScrapeCookie[] | undefined;
+    try {
+      if (opts.actions) actions = JSON.parse(opts.actions) as ScrapeAction[];
+      if (opts.cookies) cookies = JSON.parse(opts.cookies) as ScrapeCookie[];
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      spinner.fail(chalk.red('Invalid JSON in --actions or --cookies'));
+      console.error(chalk.red(`  ${msg}`));
+      process.exit(1);
+    }
 
     try {
       const hydra = createHydra();
@@ -36,6 +62,10 @@ program
       const result = await hydra.scrape(url, {
         stealth: opts.stealth,
         timeout: opts.timeout ? parseInt(opts.timeout, 10) : undefined,
+        actions,
+        waitSelector: opts.waitSelector,
+        realChrome: opts.realChrome,
+        cookies,
       });
 
       // Check if all engines failed

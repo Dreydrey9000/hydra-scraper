@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { getVenvPython } from '../config.js';
-import type { Engine, ScrapeOptions, ScrapeResult, Attempt, Capability, ScrapeAction } from '../types.js';
+import type { Engine, ScrapeOptions, ScrapeResult, Attempt, Capability, ScrapeAction, ScrapeCookie } from '../types.js';
 
 const execFileAsync = promisify(execFile);
 
@@ -49,6 +49,10 @@ export function createScraplingStealthEngine(): Engine {
       const waitSelector = opts.waitSelector ?? '';
       const realChrome = opts.realChrome ?? false;
       const stealth = opts.stealth ?? true;
+      const cookies: ScrapeCookie[] = opts.cookies ?? [];
+      const cookieHeader = cookies.length > 0
+        ? cookies.map((c) => `${c.name}=${c.value}`).join('; ')
+        : '';
 
       // Pass URL + actions via env vars to avoid shell-escape pitfalls
       const env = {
@@ -59,6 +63,7 @@ export function createScraplingStealthEngine(): Engine {
         HYDRA_STEALTH: stealth ? '1' : '0',
         HYDRA_REAL_CHROME: realChrome ? '1' : '0',
         HYDRA_TIMEOUT_MS: String(timeout),
+        HYDRA_COOKIE_HEADER: cookieHeader,
       };
 
       const script = `
@@ -71,6 +76,7 @@ wait_selector = os.environ.get("HYDRA_WAIT_SELECTOR") or None
 stealth = os.environ.get("HYDRA_STEALTH") == "1"
 real_chrome = os.environ.get("HYDRA_REAL_CHROME") == "1"
 timeout_ms = int(os.environ.get("HYDRA_TIMEOUT_MS", "45000"))
+cookie_header = os.environ.get("HYDRA_COOKIE_HEADER") or ""
 
 def make_page_action(action_list):
     def page_action(page):
@@ -118,6 +124,8 @@ try:
         kwargs["wait_selector"] = wait_selector
     if actions:
         kwargs["page_action"] = make_page_action(actions)
+    if cookie_header:
+        kwargs["extra_headers"] = {"Cookie": cookie_header}
 
     page = PlayWrightFetcher.fetch(url, **kwargs)
 

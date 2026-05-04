@@ -181,6 +181,20 @@ hydra-scraper "https://example.com" --json
 
 # Custom timeout per engine (default: 15000ms)
 hydra-scraper "https://example.com" --timeout 30000
+
+# Page actions before scraping (scrapling-stealth only)
+hydra-scraper "https://some-site.com" \
+  --actions '[{"type":"scroll","direction":"bottom"},{"type":"wait","ms":1000}]'
+
+# Wait for a CSS selector before grabbing content
+hydra-scraper "https://some-site.com" --wait-selector "main article"
+
+# Send session cookies (logged-in scraping for sites that accept cookie auth)
+hydra-scraper "https://gated-site.com" \
+  --cookies '[{"name":"session","value":"abc123"}]'
+
+# Use real installed Chrome instead of bundled Chromium (stronger fingerprint)
+hydra-scraper "https://hardened-site.com" --real-chrome --stealth
 ```
 
 ---

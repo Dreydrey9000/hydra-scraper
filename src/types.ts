@@ -33,6 +33,12 @@ export interface ScrapeOptions {
   waitSelector?: string;
   /** Use the real installed Chrome instead of bundled Chromium (better fingerprint) */
   realChrome?: boolean;
+  /**
+   * Cookies sent with the scrape request (only honored by scrapling-stealth).
+   * Useful for session-token auth (logged-in scraping). Sent as a Cookie header,
+   * NOT loaded into a full storage_state — localStorage / sessionStorage are not restored.
+   */
+  cookies?: ScrapeCookie[];
 }
 
 export type ScrapeAction =
@@ -42,6 +48,11 @@ export type ScrapeAction =
   | { type: "press"; key: string }
   | { type: "scroll"; direction?: "top" | "bottom"; selector?: string }
   | { type: "hover"; selector: string };
+
+export interface ScrapeCookie {
+  name: string;
+  value: string;
+}
 
 export interface EngineStatus {
   name: string;
