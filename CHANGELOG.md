@@ -1,3 +1,12 @@
+## [2026-05-04] — afternoon (lock-the-door fixes)
+
+### Fixed
+- `scrapling-stealth` no longer logs Scrapling's "deprecated" warning on every fetch — switched from instance-based `PlayWrightFetcher().fetch(...)` to class-method `PlayWrightFetcher.fetch(...)`. Removed deprecated `hide_canvas`/`disable_webgl` kwargs (already no-ops in 0.2.99).
+
+### Added
+- `requirements.txt` with pinned versions for all Python deps. Prevents silent breakage when Scrapling 0.3 lands with a different API.
+- README: actions API example, scrapling-stealth in the engine table, requirements.txt install instructions, engine count bumped from 10 → 11.
+
 ## [2026-05-04]
 
 ### Added

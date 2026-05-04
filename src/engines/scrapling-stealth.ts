@@ -103,21 +103,23 @@ def make_page_action(action_list):
     return page_action
 
 try:
+    # Use class-method form (PlayWrightFetcher.fetch, not PlayWrightFetcher().fetch).
+    # The instance-based API is deprecated in 0.2.99 and will be removed in 0.3.
+    # Stealth, hide_canvas, disable_webgl are deprecated and have no effect; stealth
+    # is now baked into rebrowser-playwright at the browser level.
     kwargs = {
         "headless": True,
         "stealth": stealth,
         "real_chrome": real_chrome,
         "network_idle": True,
         "timeout": timeout_ms,
-        "hide_canvas": True,
-        "disable_webgl": True,
     }
     if wait_selector:
         kwargs["wait_selector"] = wait_selector
     if actions:
         kwargs["page_action"] = make_page_action(actions)
 
-    page = PlayWrightFetcher().fetch(url, **kwargs)
+    page = PlayWrightFetcher.fetch(url, **kwargs)
 
     text = page.get_all_text() if hasattr(page, "get_all_text") else str(getattr(page, "text", ""))
     html = str(getattr(page, "html_content", "") or "")

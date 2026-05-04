@@ -1,0 +1,20 @@
+# Hydra Scraper — Python engine dependencies
+# Pinned to prevent silent breakage when Scrapling 0.3 lands (different API).
+# Verified working on macOS / Python 3.14 as of 2026-05-04.
+#
+# Install:  python -m venv .venv && source .venv/bin/activate
+#           pip install -r requirements.txt
+#           rebrowser-playwright install chromium
+
+scrapling==0.2.99
+rebrowser-playwright==1.52.0
+playwright==1.58.0
+playwright-stealth==2.0.2
+camoufox==0.4.11
+httpx==0.28.1
+lxml==5.4.0
+orjson==3.11.7
+cssselect==1.4.0
+w3lib==2.4.1
+tldextract==5.3.1
+click==8.3.1
