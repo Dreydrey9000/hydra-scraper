@@ -9,6 +9,7 @@ import { createWebFetchEngine } from './engines/webfetch.js';
 import { createCheerioEngine } from './engines/cheerio.js';
 import { createCrawl4aiEngine } from './engines/crawl4ai.js';
 import { createScraplingEngine } from './engines/scrapling.js';
+import { createScraplingStealthEngine } from './engines/scrapling-stealth.js';
 import { createFirecrawlEngine } from './engines/firecrawl.js';
 import { createPlaywrightEngine } from './engines/playwright.js';
 import { createExaEngine } from './engines/exa.js';
@@ -35,13 +36,14 @@ export function createHydra(): {
   // Load config (API keys, timeouts, etc.)
   loadConfig();
 
-  // Create all 15 engines
+  // Create all 16 engines
   const engineList: Engine[] = [
     createJinaEngine(),
     createWebFetchEngine(),
     createCheerioEngine(),
     createCrawl4aiEngine(),
     createScraplingEngine(),
+    createScraplingStealthEngine(),
     createFirecrawlEngine(),
     createPlaywrightEngine(),
     createExaEngine(),
